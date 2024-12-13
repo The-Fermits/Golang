@@ -1,0 +1,32 @@
+package main
+
+import (
+	"encoding/json"
+	"fmt"
+)
+
+
+type course struct {
+	Name string `json:"coursename"`
+	Price int 
+	PassWord string `json:"-"`
+}
+
+func main() {
+	fmt.Println("welcome back, Let's create json data in golang")
+    encode_json()
+}
+
+
+func encode_json(){
+	lcoCourse := [] course {
+		{"ReactJS",0,"abc123"},{"MongoDB",299,"pass123"},
+	}
+
+	final_json,_ := json.MarshalIndent(lcoCourse,"","\t")
+	fmt.Printf("%s\n",final_json)
+
+}
+
+// package this data as JSON data 
+
