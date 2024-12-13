@@ -1,0 +1,79 @@
+package main
+
+import (
+	"fmt"
+	"io"
+	"net/http"
+	"net/url"
+	"strings"
+)
+
+const mygeturl string = "http://localhost:8080/get"
+const myposturl string = "http://localhost:8080/post"
+const mypostformurl string = "http://localhost:8080/postform"
+
+func main() {
+	fmt.Println("Hello sir!!")
+	PerformGetRequest()
+	PerformPostJSONRequest()
+	PerformPostFormRequest()
+}
+
+func CheckError(err error) {
+	if err != nil {
+		panic((err))
+	}
+}
+
+func PerformGetRequest() {
+	response, err := http.Get(mygeturl)
+	CheckError(err)
+
+	defer response.Body.Close()
+
+	fmt.Println("Get status code is: ", response.StatusCode)
+	fmt.Println("Get content Length is: ", response.ContentLength)
+
+	content, err := io.ReadAll(response.Body)
+	CheckError(err)
+
+	fmt.Println(string(content))
+
+}
+
+func PerformPostJSONRequest() {
+	// fake JSON payload
+	//JSON syntax is  --->   "" : ""
+	//requestBody is now a fake JSON data
+	requestBody := strings.NewReader(`
+{ 
+"CourseName":"Golang"
+"Price":"0"
+"Platform":"YouTube"
+}
+`)
+
+	response, err:= http.Post(myposturl, "application/json", requestBody)
+	CheckError(err)
+	defer response.Body.Close()
+
+	content, _ := io.ReadAll(response.Body)
+	fmt.Println(string(content))
+
+}
+
+func PerformPostFormRequest() {
+data:= url.Values{}
+data.Add("firstname","salman")
+data.Add("last name", "khan")
+
+
+response, err := http.PostForm(mypostformurl,data)
+CheckError(err)
+defer response.Body.Close()
+
+content,_:= io.ReadAll(response.Body)
+fmt.Println(string(content))
+
+}
+
