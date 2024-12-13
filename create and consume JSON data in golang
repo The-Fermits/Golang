@@ -44,4 +44,15 @@ func decode_json() {
 		json.Unmarshal(json_data_from_web, &lcoCourse)
 		fmt.Printf("%#v\n", lcoCourse)
 	}
+
+	// JSON --> Map 
+
+	var myMapData map[string] interface{} //interface means we really don't know what its type 
+	json.Unmarshal(json_data_from_web,&myMapData)
+	fmt.Printf("%#v\n",myMapData)
+
+	for key, val := range myMapData {
+		fmt.Printf("Key is %v and value is %v and type is %T\n",key,val,val)
+	}
+
 }
