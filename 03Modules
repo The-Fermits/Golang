@@ -1,0 +1,45 @@
+package main
+
+import (
+	"fmt"
+	"log"
+	"net/http"
+
+	"github.com/gorilla/mux"
+)
+
+func main() {
+	greeter()
+	r := mux.NewRouter()
+	r.HandleFunc("/", serveHome).Methods("GET")
+
+	// type 1
+	//http.ListenAndServe(":4000",r)
+
+	// type 2 -> handle errors also
+	log.Fatal(http.ListenAndServe(":4000", r)) // now check localHost:4000
+
+}
+
+func greeter() {
+	fmt.Println("Hello this is greeting function")
+}
+
+func serveHome(w http.ResponseWriter, r *http.Request) {
+	w.Write([]byte("<h1>Hey this is html response by response writer</h1>"))
+}
+
+/* 
+
+write these 
+
+go mod init github.com/The-Fermits/23modules
+go get -u github.com/gorilla/mux
+
+go build .
+go mod tidy
+go mod vendor 
+go run main.go
+go run -mod=vendor main.go
+
+*/
